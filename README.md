@@ -14,6 +14,14 @@
 The goal of this repository is to package the
 [Sailfish OS platform SDK](https://sailfishos.org/wiki/Platform_SDK) as a Docker image.
 
+This image can be used to invoke all the command-line tools shipped in the SDK. It is not really
+a replacement of Jolla's VM based SDK, as the image has no integration with Qt Creator, nor can
+it deploy automatically to the emulator.
+
+Instead this image can be used when automation are needed, for instance in CI. However, you can 
+still use it in your daily developement workflow by invoking the tools and the deployment steps 
+manually.
+
 This repository contains one script, `build.sh`, that will
 
 1. Download the latest version of the SDK
@@ -50,4 +58,8 @@ You must also be connected to the Internet in order to build the image.
 
 The script will download the latest version of the SDK and targets. To update the image in a newer
 SDK version, simply rerun `build.sh`
+
+## Credits
+
+- [EvilJazz](https://github.com/evilJazz/sailfishos-buildengine) for the inspiration
 
