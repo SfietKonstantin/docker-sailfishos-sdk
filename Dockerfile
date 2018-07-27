@@ -1,18 +1,34 @@
 FROM sailfishos-platform-sdk-base
 MAINTAINER Lucien Xu <sfietkonstantin@free.fr>
 
-# Add nemo in sudoers without password
-RUN chmod +w /etc/sudoers && echo "nemo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && chmod -w /etc/sudoers
+ARG extra_packages
 
-USER nemo
+ARG tooling_url
+ARG target_arm_url
+ARG target_486_url
 
-RUN sudo zypper in -y tar
-RUN sdk-assistant -y create SailfishOS-latest \
-    http://releases.sailfishos.org/sdk/latest/Jolla-latest-Sailfish_SDK_Tooling-i486.tar.bz2
-COPY mer-tooling-chroot /srv/mer/toolings/SailfishOS-latest/
+ARG name_tooling
+ARG name_arm_target
+ARG name_486_target
 
-RUN sdk-assistant -y create SailfishOS-latest-armv7hl \
-    http://releases.sailfishos.org/sdk/latest/Jolla-latest-Sailfish_SDK_Target-armv7hl.tar.bz2
+ARG local_uid
+ARG local_gid
 
-RUN sdk-assistant -y create SailfishOS-latest-i486 \
-    http://releases.sailfishos.org/sdk/latest/Jolla-latest-Sailfish_SDK_Target-i486.tar.bz2
+# Allow any user use sudo without password
+RUN chmod +w /etc/sudoers && echo "ALL ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && chmod -w /etc/sudoers
+
+RUN groupadd -g $local_gid -r user && useradd -u $local_uid -g user -r -m user
+
+COPY sdk_bash_completion.sh /etc/profile.d/
+
+USER user
+
+RUN sudo zypper ref
+RUN sudo zypper -qn in $extra_packages
+
+RUN sdk-assistant -y create $name_tooling $tooling_url
+COPY mer-tooling-chroot /srv/mer/toolings/$name_tooling/
+
+RUN sdk-assistant -y create $name_arm_target $target_arm_url
+
+RUN sdk-assistant -y create $name_486_target $target_486_url

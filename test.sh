@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 TESTS_DIR="${SCRIPT_DIR}/tests"
-CONTAINER_TESTS_DIR=/home/nemo/tests
+CONTAINER_TESTS_DIR=/home/user/tests
 
 docker run \
     --rm \
