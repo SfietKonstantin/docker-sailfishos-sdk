@@ -4,7 +4,7 @@ set -euo pipefail
 echo "Preparing workspace"
 mkdir -p ${HOME}/workspace/armv7hl
 mkdir -p ${HOME}/workspace/i486
-cd ${HOME}/tests
+cd /tmp/tests
 cp * ${HOME}/workspace/armv7hl
 cp * ${HOME}/workspace/i486
 echo "Preparing workspace: DONE"

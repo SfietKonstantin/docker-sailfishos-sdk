@@ -1,2 +1,4 @@
 *.tar.bz2
 *.tar
+*.tar.7z
+sdkroot
