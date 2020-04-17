@@ -4,6 +4,10 @@ sudo: required
 services:
     - docker
 
+before_install:
+  - sudo apt-get -y install curl p7zip-full
+
 script:
-    - ./build.sh
+    - sudo ./build.sh
+    - docker import sdk.tar sailfishos-platform-sdk
     - ./test.sh

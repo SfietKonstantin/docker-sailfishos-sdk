@@ -4,8 +4,8 @@
 
 ## TLDR
 
-1. Run `build.sh`
-2. Image tagged `sailfishos-platform-sdk` will be generated
+1. Run `sudo build.sh`
+2. Import image with `docker import sdk.tar sailfishos-platform-sdk`
 3. Get a shell with `docker run -it sailfishos-platform-sdk /bin/bash`
 4. Enter in Scratchbox with `sb2 -t SailfishOS-latest-armv7hl`
 
@@ -25,22 +25,19 @@ manually.
 This repository contains one script, `build.sh`, that will
 
 1. Download the latest version of the SDK
-2. Create a base image from it
+2. Uncompress the content of the SDK
 3. Download the latest `armv7hl` and `i486` rootfs and install them
+4. Compress the content of the SDK for import in Docker
 
-As a result, you will get an image that will be ready to use to build for both phones, tablet and
-the emulator.
+As a result, you will be able to create an image that will be ready to use to build for both phones, 
+tablet and the emulator.
 
-This script tags two images
-
-- `sailfishos-platform-sdk-base` contains the SDK, without any installed target
-- `sailfishos-platform-sdk` contains the SDK and installed targets for `armv7hl` and `i486`
 
 ## Build
 
-You must have Docker installed and started.
-
 You must also be connected to the Internet in order to build the image.
+
+You must have installed p7zip and curl.
 
 1. Check out the project
 
@@ -52,7 +49,19 @@ You must also be connected to the Internet in order to build the image.
 
 3. Run the build script
 
-```./build.sh```
+You will need root access, as the script updates system files of a rootfs.
+
+```sudo build.sh```
+
+The build script will download some archives in the same folder as the source code.
+It will then work in `sdkroot`. It will bind-mount some folders in this folder to 
+prepare a chroot environment. Finally, it will produce a tarball named `sdk.tar`.
+
+Don't hesitate to clean the tarballs and `sdkroot` folder after running the script.
+
+4. Import the image in docker
+
+```docker import sdk.tar sailfishos-platform-sdk```
 
 ## Update
 
